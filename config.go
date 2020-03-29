@@ -12,10 +12,11 @@ import (
 )
 
 type Config struct {
-	Bind     string         `yaml:"bind"`
-	Database DatabaseConfig `yaml:"database"`
-	Log      LogConfig      `yaml:"log"`
-	WebDir   string         `yaml:"webDir"`
+	Bind      string         `yaml:"bind"`
+	AdminBind string         `yaml:"adminBind"`
+	Database  DatabaseConfig `yaml:"database"`
+	Log       LogConfig      `yaml:"log"`
+	WebDir    string         `yaml:"webDir"`
 }
 
 type LogConfig struct {

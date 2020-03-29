@@ -94,6 +94,26 @@ func (c *Company) Load(id string) (bool, error) {
 	return true, err
 }
 
+func LoadAllCompanies() ([]Company, error) {
+	log.Debug("Running: SELECT * FROM companies")
+	rows, err := db.Query(`SELECT * FROM companies`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var companies []Company
+	for rows.Next() {
+		c := Company{}
+		err := rows.Scan(&c.Id, &c.Name, &c.Logo, &c.Rating, &c.Deleted)
+		if err != nil {
+			return nil, err
+		}
+		companies = append(companies, c)
+	}
+	return companies, nil
+}
+
 func (f *Fact) Save() error {
 	query := `INSERT INTO facts (id, summary, citation, company_id, deleted)
 		VALUES (?, ?, ?, ?, ?)
@@ -188,6 +208,30 @@ func (p *ProposedFact) scan(rows *sql.Rows) (bool, error) {
 		return false, err
 	}
 	return true, nil
+}
+
+func GetUnprocessedProposedFacts() ([]ProposedFact, error) {
+	query := `SELECT * FROM proposed_facts where approved = 0 AND rejected = 0`
+	log.Debugf("Running: %s", query)
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var facts []ProposedFact
+	for {
+		pf := &ProposedFact{}
+		found, err := pf.scan(rows)
+		if err != nil {
+			return nil, err
+		}
+		if !found {
+			break
+		}
+		facts = append(facts, *pf)
+	}
+	return facts, nil
 }
 
 func (p *ProposedFact) Save() error {

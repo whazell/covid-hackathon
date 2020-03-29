@@ -1,4 +1,5 @@
 bind: :8080
+adminBind: :8081
 webDir: ./build
 database:
     name: covid
