@@ -101,4 +101,5 @@ func HandleSubmitArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Just fall through to a 200 here
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 }

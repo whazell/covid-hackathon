@@ -7,5 +7,5 @@ run-docker-db:
 		-e MYSQL_DATABASE=covid \
 		-e MYSQL_USER=covid \
 		-e MYSQL_PASSWORD=password \
-		mysql:8.0
+		mysql:5.7
 
