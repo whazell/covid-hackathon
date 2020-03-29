@@ -9,13 +9,12 @@ import (
 )
 
 type Company struct {
-	Id       string
-	Name     string
-	Logo     string
-	Rating   float64
-	Facts    []Fact
-	Deleted  bool
-	Homepage bool
+	Id      string
+	Name    string
+	Logo    string
+	Rating  float64
+	Facts   []Fact
+	Deleted bool
 }
 
 type Fact struct {
@@ -43,13 +42,12 @@ type ProposedFact struct {
 // Save the company to the database, if a new company a id is generated and assigned to
 // the struct
 func (c *Company) Save() error {
-	query := `INSERT INTO companies (id, name, logo, rating, deleted, homepage)
-		VALUES (?, ?, ?, ?, ?, ?)
+	query := `INSERT INTO companies (id, name, logo, rating, deleted)
+		VALUES (?, ?, ?, ?, ?)
 		ON DUPLICATE KEY UPDATE
 		logo = VALUES(logo),
 		rating = VALUES(rating),
-		deleted = VALUES(deleted),
-		homepage = VALUES(homepage)`
+		deleted = VALUES(deleted)`
 
 	if c.Id == "" {
 		c.Id = genId()
@@ -58,7 +56,7 @@ func (c *Company) Save() error {
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec(c.Id, c.Name, c.Logo, c.Rating, c.Deleted, c.Homepage)
+	_, err = stmt.Exec(c.Id, c.Name, c.Logo, c.Rating, c.Deleted)
 	if err != nil {
 		return err
 	}
@@ -87,7 +85,7 @@ func (c *Company) Load(id string) (bool, error) {
 		return false, nil
 	}
 
-	err = rows.Scan(&c.Id, &c.Name, &c.Logo, &c.Rating, &c.Deleted, &c.Homepage)
+	err = rows.Scan(&c.Id, &c.Name, &c.Logo, &c.Rating, &c.Deleted)
 	if err != nil {
 		return false, err
 	}
