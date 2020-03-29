@@ -1,4 +1,5 @@
 bind: :8080
+webDir: ./build
 database:
     name: covid
     port: "3306"

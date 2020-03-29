@@ -26,6 +26,10 @@ func (a CmdApi) RunE() error {
 	r.HandleFunc("/api/v1/company", covid.HandleGetCompanies).Methods("GET")
 	r.HandleFunc("/api/v1/fact", covid.HandleSubmitArticle).Methods("POST")
 
+	// Start the JS fileserver
+	fs := http.FileServer(http.Dir(a.Config.WebDir))
+	r.PathPrefix("/").Handler(http.StripPrefix("/", fs))
+
 	return http.ListenAndServe(a.Config.Bind, r)
 }
 

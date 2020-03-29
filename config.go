@@ -15,6 +15,7 @@ type Config struct {
 	Bind     string         `yaml:"bind"`
 	Database DatabaseConfig `yaml:"database"`
 	Log      LogConfig      `yaml:"log"`
+	WebDir   string         `yaml:"webDir"`
 }
 
 type LogConfig struct {
