@@ -1,9 +1,7 @@
 import React from 'react';
-import { Card, Rate, Divider } from 'antd';
+import { Card, Rate, Divider, Tooltip } from 'antd';
 import {
     BrowserRouter as Router,
-    Switch,
-    Route,
     Link
   } from "react-router-dom";
 import '../../App.less';
@@ -14,7 +12,6 @@ const { Meta } = Card;
 const BusinessCard = (props) => {
     const {company} = props;
     const { Facts, Name, Rating } = company;
-    console.log(Facts);
     return  <Card
     className="business-card"
     cover={
@@ -26,11 +23,12 @@ const BusinessCard = (props) => {
     actions={[
     ]}
   >
-    <Link to="/netflix">
+    <Link to={`/${company.Id}`}>
+    <Tooltip title="See Detailed Info">
       <span className="header-sub-title">{Name} <span className="circle-rating" ><span style={{padding:'5px'}}>{Rating}</span></span></span>
+      </Tooltip>
       </Link>
       {Facts.map(fact => <div>
-
         <Divider/>
             <span >{fact.Summary}  <a href={fact.Link}>Link</a></span>
       </div>)}

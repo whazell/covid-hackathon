@@ -1,14 +1,13 @@
 import React from 'react';
 import { Form, Input, Select, Tooltip, Button, message, Modal} from 'antd';
-import { postFact } from '../../api/company';
-import './style.less'
+import { postCompanyFact } from '../../api/company';
 const {TextArea } = Input;
-const NewFactForm = (props) => {
-  const { visible, onCancel} = props;
+const FactForm = (props) => {
+  const { visible, onCancel,id} = props;
     const onFinish = async values => {
        const { condition, summary } = values;
        try {
-        await postFact(condition, summary);
+        await postCompanyFact(id, condition, summary);
         message.success('Post new fact successfully');
        }
        catch(e) {
@@ -57,4 +56,4 @@ const NewFactForm = (props) => {
       )
 }
 
-export default NewFactForm;
+export default FactForm;
