@@ -16,6 +16,9 @@ const BusinessCard = (props) => {
     className="business-card"
     cover={
       <img
+      style={{
+        width:'100px'
+      }}
         alt="example"
         src={company.Logo}
       />
@@ -28,7 +31,7 @@ const BusinessCard = (props) => {
       <span className="header-sub-title">{Name} <span className="circle-rating" ><span style={{padding:'5px'}}>{Rating}</span></span></span>
       </Tooltip>
       </Link>
-      {Facts.map(fact => <div>
+      {Facts && Facts.map(fact => <div>
         <Divider/>
             <span >{fact.Summary}  <a href={fact.Link}>Link</a></span>
       </div>)}
