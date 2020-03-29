@@ -109,6 +109,7 @@ func LoadAllCompanies() ([]Company, error) {
 		if err != nil {
 			return nil, err
 		}
+		c.Facts, _ = LoadFacts(c.Id)
 		companies = append(companies, c)
 	}
 	return companies, nil
