@@ -9,23 +9,26 @@ import (
 	"net/http"
 )
 
-var defaultURL = "http://34.68.214.180"
+//var defaultURL = "http://34.68.214.180"
+var defaultURL = "http://localhost:8080"
+var defaultAdminURL = "http://localhost:8081"
 
-type CovidBusinessReview struct {
-	URL string
+type Client struct {
+	URL      string
+	AdminURL string
 }
 
 // CreateCompany will take a covid.Company struct and will make a call to the defined url
 // to submit the fact. Once done, it will update the given struct to have the generated ID
 // in it.
-func (cbr CovidBusinessReview) CreateCompany(company *covid.Company) error {
+func (cbr Client) CreateCompany(company *covid.Company) error {
 	b, err := json.Marshal(company)
 	if err != nil {
 		return err
 	}
 
 	r := bytes.NewReader(b)
-	resp, err := http.Post(cbr.URL+"/api/v1/company", "application/json", r)
+	resp, err := http.Post(cbr.AdminURL+"/api/v1/company", "application/json", r)
 	if err != nil {
 		return err
 	}
@@ -44,7 +47,7 @@ func (cbr CovidBusinessReview) CreateCompany(company *covid.Company) error {
 }
 
 // GetCompany will get a given company by ID
-func (cbr CovidBusinessReview) GetCompany(id string) (covid.Company, error) {
+func (cbr Client) GetCompany(id string) (covid.Company, error) {
 	var company covid.Company
 	resp, err := http.Get(cbr.URL + "/api/v1/company/" + id)
 	if err != nil {
@@ -63,7 +66,7 @@ func (cbr CovidBusinessReview) GetCompany(id string) (covid.Company, error) {
 }
 
 // SubmitArticle will submit a given fact
-func (cbr CovidBusinessReview) SubmitArticle(fact *covid.ProposedFact) error {
+func (cbr Client) SubmitArticle(fact *covid.ProposedFact) error {
 	b, err := json.Marshal(fact)
 	if err != nil {
 		return err
@@ -89,9 +92,9 @@ func (cbr CovidBusinessReview) SubmitArticle(fact *covid.ProposedFact) error {
 }
 
 // GetAllFacts will query the service to get all _unprocessed_ proposed facts
-func (cbr CovidBusinessReview) GetAllFacts() ([]covid.ProposedFact, error) {
+func (cbr Client) GetAllFacts() ([]covid.ProposedFact, error) {
 	var facts []covid.ProposedFact
-	resp, err := http.Get(cbr.URL + "/api/v1/fact/proposed")
+	resp, err := http.Get(cbr.AdminURL + "/api/v1/fact/proposed")
 	if err != nil {
 		return nil, err
 	}
@@ -108,14 +111,14 @@ func (cbr CovidBusinessReview) GetAllFacts() ([]covid.ProposedFact, error) {
 }
 
 // UpdateProposedFact will update a given proposed fact
-func (cbr CovidBusinessReview) UpdateProposedFact(fact covid.ProposedFact) error {
+func (cbr Client) UpdateProposedFact(fact covid.ProposedFact) error {
 	b, err := json.Marshal(fact)
 	if err != nil {
 		return err
 	}
 
 	r := bytes.NewReader(b)
-	req, err := http.NewRequest("PUT", cbr.URL+"/api/v1/fact/proposed/"+fact.Id, r)
+	req, err := http.NewRequest("PUT", cbr.AdminURL+"/api/v1/fact/proposed/"+fact.Id, r)
 	if err != nil {
 		return err
 	}
@@ -133,14 +136,14 @@ func (cbr CovidBusinessReview) UpdateProposedFact(fact covid.ProposedFact) error
 }
 
 // CreateFact will create a given fact, and update the struct with the fact's Id
-func (cbr CovidBusinessReview) CreateFact(fact *covid.Fact) error {
+func (cbr Client) CreateFact(fact *covid.Fact) error {
 	b, err := json.Marshal(fact)
 	if err != nil {
 		return err
 	}
 
 	r := bytes.NewReader(b)
-	resp, err := http.Post(cbr.URL+"/api/v1/fact", "application/json", r)
+	resp, err := http.Post(cbr.AdminURL+"/api/v1/fact", "application/json", r)
 	if err != nil {
 		return err
 	}

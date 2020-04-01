@@ -35,8 +35,8 @@ type ProposedFact struct {
 
 	// Non-approved proposed facts imply they have yet to be processed. When Rejected is
 	// true, that means they have been processed but not accepted and should be ignored.
-	Approved bool `json:"-"`
-	Rejected bool `json:"-"`
+	Approved bool
+	Rejected bool
 }
 
 // Save the company to the database, if a new company a id is generated and assigned to
