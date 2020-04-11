@@ -2,6 +2,8 @@ package main
 
 import (
 	"covid/cmd/api"
+	"covid/cmd/create"
+	"covid/cmd/process"
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
@@ -13,6 +15,8 @@ func NewCommand() *cobra.Command {
 		Short: "Covid-19 Business Tracker API & CLI tool",
 	}
 	rootCmd.AddCommand(api.NewCommand())
+	rootCmd.AddCommand(create.NewCommand())
+	rootCmd.AddCommand(process.NewCommand())
 	return rootCmd
 }
 

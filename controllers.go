@@ -93,6 +93,11 @@ func HandleSubmitArticle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Set approved/rejected fields, can't use json:"-" with the struct field as the
+	// internal API for updating has to accept the fields as JSON
+	fact.Approved = false
+	fact.Rejected = false
+
 	check := &ProposedFact{}
 	exists, err := check.LoadCitation(fact.Citation)
 	if err != nil {
@@ -109,6 +114,9 @@ func HandleSubmitArticle(w http.ResponseWriter, r *http.Request) {
 		w.Write(submitted)
 		return
 	}
+
+	// Proposed fact shouldn't have user made id
+	fact.Id = ""
 
 	// If it doesn't exist, save the given one to the database
 	err = fact.Save()
